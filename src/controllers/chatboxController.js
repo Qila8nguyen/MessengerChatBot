@@ -1,6 +1,6 @@
 require("dotenv").config();
 import request from "request";
-import { BTN_OPTION, BTN_EXAMPLE } from "../../constants";
+import { BTN_OPTION, BTN_EXAMPLE, SET_UPPER_BOUND, SET_LOWER_BOUND } from "../../constants";
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
