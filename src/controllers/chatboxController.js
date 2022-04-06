@@ -14,7 +14,8 @@ function handleMessage(sender_psid, received_message) {
   let response;
 
   const {text, attachments} = received_message;
-  
+
+  console.log("THE TEXT is ",text);
   // Checks if the message contains text
   if (text) {    
     if (text.includes("upper")) {
@@ -26,9 +27,11 @@ function handleMessage(sender_psid, received_message) {
       response = BTN_OPTION([SET_UPPER_BOUND, SET_LOWER_BOUND]);
     }
 
+    console.log("response for text = ", response);
+
   } else if (attachments) {
     // Get the URL of the message attachment
-    let attachment_url = received_message.attachments[0].payload.url;
+    let attachment_url = attachments[0].payload.url;
     response = BTN_EXAMPLE(attachment_url);
   } 
   

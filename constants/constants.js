@@ -41,7 +41,7 @@ export const SET_INTERVAL_TIME = {
 //       }
 //     }
 
-export const BTN_OPTION = (option) => {
+export const BTN_OPTION = (options) => {
     return {
     "attachment": {
         "type": "template",
@@ -49,7 +49,7 @@ export const BTN_OPTION = (option) => {
           "template_type": "button",
             // "text": "Postback button testing",
             "buttons": 
-            option.map((each) => {
+            options.map((each) => {
                 return {
                   "type": "postback",
                   "title": each.title,
