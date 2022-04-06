@@ -12,9 +12,32 @@ function handleMessage(sender_psid, received_message) {
   if (received_message.text) {    
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
-    response = {
-      "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
-    }
+    // response = {
+    //   "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
+    // }
+
+      response = {
+        "recipient":{
+          "id":sender_psid,
+        },
+        "message":{
+          "attachment":{
+            "type":"template",
+            "payload":{
+              "template_type":"button",
+              "text":"Try the postback button!",
+              "buttons":[
+                {
+                  "type":"postback",
+                  "title":"Postback Button",
+                  "payload":"DEVELOPER_DEFINED_PAYLOAD"
+                }
+              ]
+            }
+          }
+        }
+      }
+
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
     let attachment_url = received_message.attachments[0].payload.url;
@@ -154,3 +177,34 @@ module.exports = {
   postWebHook: postWebHook,
   getWebHook: getWebHook,
 };
+
+// <!-- Messenger Plugin chat Code -->
+//     <div id="fb-root"></div>
+
+//     <!-- Your Plugin chat code -->
+//     <div id="fb-customer-chat" class="fb-customerchat">
+//     </div>
+
+//     <script>
+//       var chatbox = document.getElementById('fb-customer-chat');
+//       chatbox.setAttribute("page_id", "1388072524642720");
+//       chatbox.setAttribute("attribution", "biz_inbox");
+//     </script>
+
+//     <!-- Your SDK code -->
+//     <script>
+//       window.fbAsyncInit = function() {
+//         FB.init({
+//           xfbml            : true,
+//           version          : 'v13.0'
+//         });
+//       };
+
+//       (function(d, s, id) {
+//         var js, fjs = d.getElementsByTagName(s)[0];
+//         if (d.getElementById(id)) return;
+//         js = d.createElement(s); js.id = id;
+//         js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+//         fjs.parentNode.insertBefore(js, fjs);
+//       }(document, 'script', 'facebook-jssdk'));
+//     </script>
