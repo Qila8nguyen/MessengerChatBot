@@ -24,35 +24,13 @@ function handleMessage(sender_psid, received_message) {
   // Checks if the message contains text
   if (text) {
     if (text.includes("upper")) {
-      response = BTN_OPTION(SET_LOWER_BOUND);
+      response = BTN_OPTION([SET_LOWER_BOUND]);
     } else if (text.includes("lower")) {
-      response = BTN_OPTION(SET_UPPER_BOUND);
+      response = BTN_OPTION([SET_UPPER_BOUND]);
     } else {
       response = BTN_OPTION([SET_UPPER_BOUND, SET_LOWER_BOUND]);
-
-      response = {
-        attachment: {
-          type: "template",
-          payload: {
-            template_type: "button",
-            buttons: [
-              {
-                type: "postback",
-                title: "set upper bound",
-                payload: "set-upper-bound",
-              },
-              {
-                type: "postback",
-                title: "set lower bound",
-                payload: "set-lower-bound",
-              },
-            ],
-          },
-        },
-      };
     }
 
-    console.log("response for text = ", response);
   } else if (attachments) {
     // Get the URL of the message attachment
     let attachment_url = attachments[0].payload.url;

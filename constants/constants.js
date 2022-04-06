@@ -47,7 +47,7 @@ export const BTN_OPTION = (options) => {
         "type": "template",
         "payload": {
           "template_type": "button",
-            // "text": "Postback button testing",
+            "text": "How can i help you",
             "buttons": 
             options.map((each) => {
                 return {
