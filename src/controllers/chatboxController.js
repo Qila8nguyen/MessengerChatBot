@@ -16,27 +16,31 @@ function handleMessage(sender_psid, received_message) {
     //   "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
     // }
 
-      response = {
-        "recipient":{
-          "id":sender_psid,
-        },
-        "message":{
-          "attachment":{
-            "type":"template",
-            "payload":{
-              "template_type":"button",
-              "text":"Try the postback button!",
-              "buttons":[
-                {
-                  "type":"postback",
-                  "title":"Postback Button",
-                  "payload":"DEVELOPER_DEFINED_PAYLOAD"
-                }
-              ]
-            }
-          }
+    response = {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": [{
+            // "title": "Is this the right picture?",
+            // "subtitle": "Tap a button to answer.",
+            // "image_url": attachment_url,
+            "buttons": [
+              {
+                "type": "postback",
+                "title": "You want this ?",
+                "payload": "yes",
+              },
+              {
+                "type": "postback",
+                "title": "Am i the one?",
+                "payload": "no",
+              }
+            ],
+          }]
         }
       }
+    }
 
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
