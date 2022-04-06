@@ -1,6 +1,11 @@
 require("dotenv").config();
 import request from "request";
-import { BTN_OPTION, BTN_EXAMPLE, SET_UPPER_BOUND, SET_LOWER_BOUND } from "../../constants";
+import {
+  BTN_OPTION,
+  BTN_EXAMPLE,
+  SET_UPPER_BOUND,
+  SET_LOWER_BOUND,
+} from "../../constants";
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
@@ -13,44 +18,63 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 function handleMessage(sender_psid, received_message) {
   let response;
 
-  const {text, attachments} = received_message;
+  const { text, attachments } = received_message;
 
-  console.log("THE TEXT is ",text);
+  console.log("THE TEXT is ", text);
   // Checks if the message contains text
-  if (text) {    
+  if (text) {
     if (text.includes("upper")) {
-      response = JSON.stringify(BTN_OPTION(SET_LOWER_BOUND));
-    } 
-    else if (text.includes("lower")) {
-      response = JSON.stringify(BTN_OPTION(SET_UPPER_BOUND));
+      response = BTN_OPTION(SET_LOWER_BOUND);
+    } else if (text.includes("lower")) {
+      response = BTN_OPTION(SET_UPPER_BOUND);
     } else {
-      response = JSON.stringify(BTN_OPTION([SET_UPPER_BOUND, SET_LOWER_BOUND]));
+      response = BTN_OPTION([SET_UPPER_BOUND, SET_LOWER_BOUND]);
+
+      response = {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "button",
+            buttons: [
+              {
+                type: "postback",
+                title: "set upper bound",
+                payload: "set-upper-bound",
+              },
+              {
+                type: "postback",
+                title: "set lower bound",
+                payload: "set-lower-bound",
+              },
+            ],
+          },
+        },
+      };
     }
 
     console.log("response for text = ", response);
-
   } else if (attachments) {
     // Get the URL of the message attachment
     let attachment_url = attachments[0].payload.url;
-    response = JSON.stringify(BTN_EXAMPLE(attachment_url));
-  } 
-  
+    response = BTN_EXAMPLE(attachment_url);
+  }
+
   // Send the response message
-  callSendAPI(sender_psid, response);   
+  callSendAPI(sender_psid, response);
 }
 
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
   let response;
-  
+
   // Get the payload for the postback
   let payload = received_postback.payload;
 
   // Set the response based on the postback payload
   if (payload === SET_LOWER_BOUND.payload) {
-    response = { "text": "Please enter the amount for LOWER bound" }
+    response = { text: "Please enter the amount for LOWER bound" };
   } else if (payload === SET_UPPER_BOUND.payload) {
-    response = { "text": "Please enter the amount for UPPER bound" }
+    response = { text: "Please enter the amount for UPPER bound" };
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
@@ -58,27 +82,30 @@ function handlePostback(sender_psid, received_postback) {
 
 // Sends response messages via the Send API
 function callSendAPI(sender_psid, response) {
-    // Construct the message body
-    let request_body = {
-      "recipient": {
-        "id": sender_psid
-      },
-      "message": response
-    }
-  
-    // Send the HTTP request to the Messenger Platform
-    request({
-      "uri": "https://graph.facebook.com/v2.6/me/messages",
-      "qs": { "access_token": PAGE_ACCESS_TOKEN },
-      "method": "POST",
-      "json": request_body
-    }, (err, res, body) => {
+  // Construct the message body
+  let request_body = {
+    recipient: {
+      id: sender_psid,
+    },
+    message: response,
+  };
+
+  // Send the HTTP request to the Messenger Platform
+  request(
+    {
+      uri: "https://graph.facebook.com/v2.6/me/messages",
+      qs: { access_token: PAGE_ACCESS_TOKEN },
+      method: "POST",
+      json: request_body,
+    },
+    (err, res, body) => {
       if (!err) {
-        console.log('message sent!')
+        console.log("message sent!");
       } else {
         console.error("Unable to send message:" + err);
       }
-    }); 
+    }
+  );
 }
 
 let getHomepage = (req, res) => {
@@ -139,13 +166,10 @@ let getWebHook = (req, res) => {
   }
 };
 
-function updateInfo () {
-  
-}
+function updateInfo() {}
 
 module.exports = {
   getHomepage: getHomepage,
   postWebHook: postWebHook,
   getWebHook: getWebHook,
 };
-

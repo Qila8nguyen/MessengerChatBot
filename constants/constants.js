@@ -8,7 +8,7 @@ export const SET_UPPER_BOUND = {
 }
 export const SET_LOWER_BOUND = {
     title: "set lower bound",
-    payload: "ser-lower-bound",
+    payload: "set-lower-bound",
 }
 export const STOP_BOUND = {
     title: "stop setting bound",
