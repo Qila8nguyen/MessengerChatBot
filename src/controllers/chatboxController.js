@@ -19,12 +19,12 @@ function handleMessage(sender_psid, received_message) {
   // Checks if the message contains text
   if (text) {    
     if (text.includes("upper")) {
-      response = BTN_OPTION(SET_LOWER_BOUND);
+      response = JSON.stringify(BTN_OPTION(SET_LOWER_BOUND));
     } 
     else if (text.includes("lower")) {
-      response = BTN_OPTION(SET_UPPER_BOUND);
+      response = JSON.stringify(BTN_OPTION(SET_UPPER_BOUND));
     } else {
-      response = BTN_OPTION([SET_UPPER_BOUND, SET_LOWER_BOUND]);
+      response = JSON.stringify(BTN_OPTION([SET_UPPER_BOUND, SET_LOWER_BOUND]));
     }
 
     console.log("response for text = ", response);
@@ -32,7 +32,7 @@ function handleMessage(sender_psid, received_message) {
   } else if (attachments) {
     // Get the URL of the message attachment
     let attachment_url = attachments[0].payload.url;
-    response = BTN_EXAMPLE(attachment_url);
+    response = JSON.stringify(BTN_EXAMPLE(attachment_url));
   } 
   
   // Send the response message
