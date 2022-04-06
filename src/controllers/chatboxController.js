@@ -20,11 +20,8 @@ function handleMessage(sender_psid, received_message) {
       "attachment": {
         "type": "template",
         "payload": {
-          "template_type": "generic",
-          "elements": [{
-            // "title": "Is this the right picture?",
-            // "subtitle": "Tap a button to answer.",
-            // "image_url": attachment_url,
+          "template_type": "button",
+            "text": "Postback button testing",
             "buttons": [
               {
                 "type": "postback",
@@ -37,10 +34,9 @@ function handleMessage(sender_psid, received_message) {
                 "payload": "no",
               }
             ],
-          }]
+          }
         }
       }
-    }
 
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
