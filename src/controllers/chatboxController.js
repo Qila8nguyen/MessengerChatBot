@@ -4,68 +4,31 @@ import request from "request";
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
+// var userInfo = {
+
+// }
+
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
   let response;
+
+  const {text, attachments} = received_message;
   
   // Checks if the message contains text
-  if (received_message.text) {    
-    // Create the payload for a basic text message, which
-    // will be added to the body of our request to the Send API
-    // response = {
-    //   "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
-    // }
+  if (text) {    
+    if (text.includes("upper")) {
+      response = BTN_OPTION(SET_LOWER_BOUND);
+    } 
+    else if (text.includes("lower")) {
+      response = BTN_OPTION(SET_UPPER_BOUND);
+    } else {
+      response = BTN_OPTION([SET_UPPER_BOUND, SET_LOWER_BOUND]);
+    }
 
-    response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "button",
-            "text": "Postback button testing",
-            "buttons": [
-              {
-                "type": "postback",
-                "title": "You want this ?",
-                "payload": "yes",
-              },
-              {
-                "type": "postback",
-                "title": "Am i the one?",
-                "payload": "no",
-              }
-            ],
-          }
-        }
-      }
-
-  } else if (received_message.attachments) {
+  } else if (attachments) {
     // Get the URL of the message attachment
     let attachment_url = received_message.attachments[0].payload.url;
-    response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [{
-            "title": "Is this the right picture?",
-            "subtitle": "Tap a button to answer.",
-            "image_url": attachment_url,
-            "buttons": [
-              {
-                "type": "postback",
-                "title": "Yes!",
-                "payload": "yes",
-              },
-              {
-                "type": "postback",
-                "title": "No!",
-                "payload": "no",
-              }
-            ],
-          }]
-        }
-      }
-    }
+    response = BTN_EXAMPLE(attachment_url);
   } 
   
   // Send the response message
@@ -80,10 +43,10 @@ function handlePostback(sender_psid, received_postback) {
   let payload = received_postback.payload;
 
   // Set the response based on the postback payload
-  if (payload === 'yes') {
-    response = { "text": "Thanks!" }
-  } else if (payload === 'no') {
-    response = { "text": "Oops, try sending another image." }
+  if (payload === SET_LOWER_BOUND.payload) {
+    response = { "text": "Please enter the amount for LOWER bound" }
+  } else if (payload === SET_UPPER_BOUND.payload) {
+    response = { "text": "Please enter the amount for UPPER bound" }
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
@@ -172,39 +135,13 @@ let getWebHook = (req, res) => {
   }
 };
 
+function updateInfo () {
+  
+}
+
 module.exports = {
   getHomepage: getHomepage,
   postWebHook: postWebHook,
   getWebHook: getWebHook,
 };
 
-// <!-- Messenger Plugin chat Code -->
-//     <div id="fb-root"></div>
-
-//     <!-- Your Plugin chat code -->
-//     <div id="fb-customer-chat" class="fb-customerchat">
-//     </div>
-
-//     <script>
-//       var chatbox = document.getElementById('fb-customer-chat');
-//       chatbox.setAttribute("page_id", "1388072524642720");
-//       chatbox.setAttribute("attribution", "biz_inbox");
-//     </script>
-
-//     <!-- Your SDK code -->
-//     <script>
-//       window.fbAsyncInit = function() {
-//         FB.init({
-//           xfbml            : true,
-//           version          : 'v13.0'
-//         });
-//       };
-
-//       (function(d, s, id) {
-//         var js, fjs = d.getElementsByTagName(s)[0];
-//         if (d.getElementById(id)) return;
-//         js = d.createElement(s); js.id = id;
-//         js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
-//         fjs.parentNode.insertBefore(js, fjs);
-//       }(document, 'script', 'facebook-jssdk'));
-//     </script>
