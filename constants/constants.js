@@ -1,25 +1,25 @@
-const LIST_COINS = {
+export const LIST_COINS = {
     title: "list 20 most popular coins",
     payload: "list-coins"
 }
-const SET_UPPER_BOUND = {
+export const SET_UPPER_BOUND = {
     title: "set upper bound",
     payload: "set-upper-bound",
 }
-const SET_LOWER_BOUND = {
+export const SET_LOWER_BOUND = {
     title: "set lower bound",
     payload: "ser-lower-bound",
 }
-const STOP_BOUND = {
+export const STOP_BOUND = {
     title: "stop setting bound",
     payload: "stop-bound",
 }
-const SET_INTERVAL_TIME = {
+export const SET_INTERVAL_TIME = {
     title: "set interval time",
     payload: "set-interval-time",
 }
 
-// const BTN_2OPTIONS = {
+// export const BTN_2OPTIONS = {
 //     "attachment": {
 //       "type": "template",
 //       "payload": {
@@ -41,7 +41,7 @@ const SET_INTERVAL_TIME = {
 //       }
 //     }
 
-const BTN_OPTION = (option) => {
+export const BTN_OPTION = (option) => {
     return {
     "attachment": {
         "type": "template",
@@ -61,7 +61,7 @@ const BTN_OPTION = (option) => {
       }
 }
 
-const BTN_EXAMPLE = (attachment_url) => {
+export const BTN_EXAMPLE = (attachment_url) => {
     return {
         "attachment": {
           "type": "template",
