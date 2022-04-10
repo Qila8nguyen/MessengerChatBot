@@ -5,14 +5,12 @@ import {
   BTN_EXAMPLE,
   SET_UPPER_BOUND,
   SET_LOWER_BOUND,
+  STOP_BOUND,
 } from "../../constants";
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
-// var userInfo = {
-
-// }
 
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
@@ -24,7 +22,7 @@ function handleMessage(sender_psid, received_message) {
   // Checks if the message contains text
   if (text) {
     if (text.includes("upper")) {
-      response = BTN_OPTION([SET_LOWER_BOUND]);
+      response = BTN_OPTION([SET_LOWER_BOUND, STOP_BOUND]);
     } else if (text.includes("lower")) {
       response = BTN_OPTION([SET_UPPER_BOUND]);
     } else {
@@ -40,6 +38,7 @@ function handleMessage(sender_psid, received_message) {
   // Send the response message
   callSendAPI(sender_psid, response);
 }
+
 
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
@@ -57,6 +56,7 @@ function handlePostback(sender_psid, received_postback) {
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
 }
+
 
 // Sends response messages via the Send API
 function callSendAPI(sender_psid, response) {
@@ -92,7 +92,7 @@ let getHomepage = (req, res) => {
 
 let postWebHook = (req, res) => {
   let body = req.body;
-
+  
   // Checks this is an event from a page subscription
   if (body.object === "page") {
     // Iterates over each entry - there may be multiple if batched
