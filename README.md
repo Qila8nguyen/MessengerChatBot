@@ -15,12 +15,14 @@ npm install
 3. When user enter a request via text message to answer the postback buttons received previously, would there be a way to save the request without processing the string ?
 4. How to connect db? connect mongoose to connect mongodb ?
 5. Format for a user ? 
+```
 user_name
 user_id
 request = {
     bounds: int[],
     time: int[]    //mins, the interval time for getting a coin ???
 }
+```
 
 ### Reference
 
